@@ -1,0 +1,11 @@
+﻿<ul id="myTab" class="nav nav-tabs">
+	<%for(var i=0;i<tabs.length;i++){%>
+		<li class="<%=i==0?"active":""%>"><a href="#<%=tabs[i].name%>" data-toggle="tab"><%=tabs[i].desc%></a></li>
+	<%}%>
+</ul>
+<div id="myTabContent" class="tab-content" style="padding-top:10px;">
+	<%for(var i=0;i<tabs.length;i++){%>
+		<div class="tab-pane fade <%=i==0?"in active":""%>" id="<%=tabs[i].name%>">
+		</div>
+	<%}%>
+</div>

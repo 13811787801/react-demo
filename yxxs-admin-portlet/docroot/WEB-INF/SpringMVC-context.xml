@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context.xsd   
+        http://www.springframework.org/schema/mvc    
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">  
+        
+    <!-- #################################################################################### -->
+    <!-- never modify this config file directly, put config in file SpringMVC-context-ext.xml -->
+    <!-- #################################################################################### -->
+    
+    <context:component-scan base-package="com.yxxs.controller.dev" />
+    <context:component-scan base-package="com.yxxs.controller.www" />
+    <context:component-scan base-package="com.yxxs.common.handler" />
+    
+    <import resource="SpringMVC-context-ext.xml" />
+    
+    <mvc:annotation-driven />
+    <!-- Json --> 
+    <bean id="jacksonMessageConverter" 
+    	class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">    
+	      <property name="supportedMediaTypes">
+	           <list>
+	               <value>text/html;charset=UTF-8</value>
+                   <value>text/plain;charset=UTF-8</value>
+	               <value>application/json;charset=UTF-8</value>
+	           </list>
+	       </property>
+	</bean> 
+    
+    <bean id="viewResolver"  
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean>
+    
+    <bean id="exceptionHandler" class="com.yxxs.common.handler.CommonErrorHandler"/>
+    
+    	
+    
+</beans>  

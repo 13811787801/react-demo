@@ -1,0 +1,15 @@
+﻿<div class="row form-group">
+    <div class="col-sm-2 control-label">
+        <span><%=label%></span>
+    </div>
+    <div class="col-sm-6">
+		<select id="<%=FileName%>" class="<%=FileName%> form-control">
+		<%for(var i in data){%>
+			<option value="<%=data[i].k%>"><%=data[i].v%></option>
+		<%}%>
+		</select>
+		<%if(desc){%>
+			<p><%=desc%></p>
+		<%}%>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
+<service-builder package-path="com.yxxs">
+	<author>Administrator</author>
+	<namespace>yxxsSecurityServ</namespace>
+
+    <entity name="GroupEntity" local-service="true" table="yxxs_sec_group">
+        <column name="id" type="long" primary="true"></column>
+        <column name="title" type="String"></column>
+        <column name="code" type="String"></column>
+        <column name="description" type="String"></column>
+        <column name="status" type="String"></column>
+    </entity>
+    
+    <entity name="PrivilegeItemEntity" local-service="true" table="yxxs_sec_item">
+        <column name="id" type="long" primary="true"></column>
+        <column name="title" type="String"></column>
+        <column name="description" type="String"></column>
+        <column name="parent_id" type="long"></column>
+        <column name="privilege_code" type="String"></column>
+        <column name="url" type="String"></column>
+        <column name="order_sn" type="int"></column>
+        <column name="icon" type="String"></column>
+        <column name="status" type="String"></column>
+        <column name="code" type="String"></column>
+    </entity>
+    
+    <entity name="GroupPrivilegeEntity" local-service="true" table="yxxs_sec_group_privilege">
+        <column name="id" type="long" primary="true"></column>
+        <column name="group_id" type="long"></column>
+        <column name="privilege_title" type="String"></column>
+        <column name="privilege_code" type="String"></column>
+        <column name="function_list" type="String"></column>
+        <finder name="GroupPrivilege" return-type="GroupPrivilegeEntity" unique="true">
+            <finder-column name="group_id"></finder-column>
+            <finder-column name="privilege_code"></finder-column>
+        </finder>
+        <finder name="GroupPrivileges" return-type="Collection">
+            <finder-column name="group_id"  comparator="=" arrayable-operator="AND"></finder-column>
+        </finder>
+    </entity>
+    
+    <entity name="UserGroupEntity" local-service="true" table="yxxs_sec_user_group">
+        <column name="id" type="long" primary="true"></column>
+        <column name="user_id" type="long"></column>
+        <column name="group_id" type="long"></column>
+        <column name="user_type" type="int"></column>
+        <column name="flag" type="int"></column>
+        <column name="update_date" type="Date"></column>
+        <column name="end_date" type="Date"></column>
+        <column name="start_date" type="Date"></column>
+        <finder name="UserGroup" return-type="UserGroupEntity" unique="true">
+            <finder-column name="group_id"></finder-column>
+            <finder-column name="user_id"></finder-column>
+            <finder-column name="user_type"></finder-column>
+        </finder>
+        <finder name="GroupByUserType" return-type="Collection">
+            <finder-column name="group_id"  comparator="=" arrayable-operator="AND"></finder-column>
+            <finder-column name="user_type"  comparator="=" arrayable-operator="AND"></finder-column>
+        </finder>
+        <finder name="UserByUserType" return-type="Collection">
+            <finder-column name="user_id"  comparator="=" arrayable-operator="AND"></finder-column>
+            <finder-column name="user_type"  comparator="=" arrayable-operator="AND"></finder-column>
+        </finder>
+    </entity>
+    <entity name="UserPrivilegeEntity" local-service="true" table="yxxs_sec_user_privilege">
+        <column name="id" type="long" primary="true"></column>
+        <column name="user_id" type="long"></column>
+        <column name="privilege_title" type="String"></column>
+        <column name="privilege_code" type="String"></column>
+        <column name="function_list" type="String"></column>
+        <finder name="UserPrivilege" return-type="UserPrivilegeEntity" unique="true">
+            <finder-column name="user_id"></finder-column>
+            <finder-column name="privilege_code"></finder-column>
+        </finder>
+        <finder name="UserPrivileges" return-type="Collection">
+            <finder-column name="user_id"  comparator="=" arrayable-operator="AND"></finder-column>
+        </finder>
+    </entity>
+</service-builder>
