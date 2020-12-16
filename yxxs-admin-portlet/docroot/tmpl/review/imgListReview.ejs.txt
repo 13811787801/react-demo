@@ -1,0 +1,17 @@
+﻿<style>
+    #images li{text-align:center;}
+</style>
+<div class="row form-group">
+    <div class="col-sm-2 control-label">
+        <span><%=label%></span>
+    </div>
+    <div class="col-sm-8">
+        <div id="imagesDiv">
+            <ul id="images">
+                <%for(var i=0;i<value.length;i++){%>
+        		<li><img src="<%=value[i]%>" style="max-width:400px;max-height:400px;"/></li>
+        		<%}%>
+    		</ul>
+		</div>
+    </div>
+</div>

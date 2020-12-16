@@ -1,0 +1,28 @@
+﻿<style>
+.margin23{
+    margin-left:23px;
+}
+.marginb7{
+    margin-bottom: 7px;
+}
+.paddingt2{
+    padding-top:2px;
+}
+</style>
+<ul>
+    <li class="marginb7"><strong><font color="#428bca">专家点评</font></strong>：<%=obj.dto.apprise.comment%></li>
+    <li class="marginb7"><strong><font color="#428bca">任务类型</font></strong>：<%=taskclassify%>  ，   <strong><font color="#428bca">章节名称</font></strong>：<%=sectionName%></li>
+    <li class="marginb7"><strong><font color="#428bca">任务描述</font></strong>：<%=obj.dto.apprise.extDesc%></li>
+    <li class="marginb7"><strong><font color="#428bca">关联资料</font></strong>：</br>
+        <div class="margin23 paddingt2">
+            <% 
+                for(var i=0; i<files.length; i++){
+            %>
+                
+                <a target="_blank" href="/yxxs-admin-portlet/admin/file/fileForm?fileId=<%=files[i].fileEntryId%>"><%=files[i].title%></a></br>
+            <%
+                }
+            %>
+        <div>
+    </li>
+</ul>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="yxxs-security-serv-portlet" basedir="." default="deploy">
+    <property name="project.buildSuffix" value="Cut" />
+    <property name="project.warSuffix" value="" />
+	<import file="../build-common-portlet.xml" />
+</project>

@@ -1,0 +1,99 @@
+SELECT
+	CONCAT(u.lastName, u.firstName) AS 教师姓名,
+	u.emailAddress AS 账号,
+	bw.openId AS 微信,
+	(SELECT number_ FROM phone WHERE userId = u.userId LIMIT 1) AS 电话,
+	schoolName AS 学校,
+	u.createDate AS 注册日期,
+	lastTime AS 最后发任务时间,
+    firstTime As 首发任务时间,
+    cnt_stu As 学生数,
+	u.loginDate AS 最近登陆时间,
+	classCnt AS 班级数,
+	classNames AS 所在班级,
+	0 AS 学生总数,
+	IF (isnull(taskCnt), 0, taskCnt) AS 阶段任务数量,
+	avgp.all_taskCnt AS 任务总数,
+	IF (isnull(gTaskCnt),0,gTaskCnt) AS 阶段活跃任务数,
+	avg_rank AS 阶段任务平均互动率,
+	avgperson AS 平均互动_人,
+ 	(SELECT GROUP_CONCAT(cName) FROM yxxs_basecurriculum WHERE FIND_IN_SET(cId, curriculumList)) AS 任务学科
+FROM
+(
+	SELECT u.*
+	  FROM user_ AS u,yxxs_user_ext AS ue
+	 WHERE type_ = 3
+	   AND emailAddress NOT LIKE '%@iyxxs.com'
+	   AND emailAddress NOT LIKE '%@youxueup.com'
+       and u.userId = ue.userId
+) as u
+LEFT JOIN (
+	SELECT
+		tp.userId,
+		count(uc.userId) / count(tp.topicDiscussionId) AS avgperson,
+		count(tp.topicDiscussionId) as all_taskCnt
+	FROM
+	yxxs_topicdiscussion tp
+	left join yxxs_topicdiscussion_usercounter uc on uc.topicDiscussionId =  tp.topicDiscussionId and discussionNum+homeworkNum+praiseNum+commentNum>0
+	GROUP BY
+		tp.userId
+) AS avgp ON u.userId = avgp.userId
+left join (select userid,sum(cnt_stu) cnt_stu from
+			(SELECT classid,count(distinct userid) cnt_stu
+				from view_yxxs_user_class_school
+			 where FIND_IN_SET(14214,roles)
+			 group by classid) a,
+			(SELECT classid,userid,roles
+				from view_yxxs_user_class_school
+			 where FIND_IN_SET(14216,roles)) b
+			where a.classid = b.classid
+			group by userId) stu on u.userid = stu.useri
+left join (
+	select 
+	userId,schoolId,
+	name as schoolName,
+	group_concat(classId) AS classList,
+	group_concat(name) as classNames,
+	count(classId) AS classCnt
+	from (select userId,schoolId,roles,classId 
+	        from view_yxxs_user_class_school FORCE INDEX(pk_view_yxxs_user_class_school_userid) 
+	       WHERE userId > 0 and schoolId > 0
+	     ) as v_ucs
+	left join organization_ as o on v_ucs.classId=o.organizationId
+	where FIND_IN_SET(14216,roles) and schoolId>0
+	group by userId
+) AS ccc ON ccc.userId = u.userId
+LEFT JOIN (
+	SELECT
+		a.userId,
+		max(a.createTime) lastTime,
+		min(a.createTime) firstTime,
+		avg(if(a.createTime >=@var_taskDay,rank,null)) AS avg_rank,
+		sum(if(a.createTime >=@var_taskDay,IF(rank > 0.5, 1, 0),0)) AS gTaskCnt,
+		sum(if(a.createTime >=@var_taskDay,IF(rank <= 0.3, 1, 0),0)) AS lTaskCnt,
+		sum(if(a.createTime >=@var_taskDay,IF (rank > 0.3 AND rank <= 0.5, 1, 0),0)) AS mTaskCnt,
+		sum(if(a.createTime >=@var_taskDay,1,0)) AS taskCnt,
+		GROUP_CONCAT(DISTINCT(if(a.createTime >=@var_taskDay,v_ti.curriculumId,null))) AS curriculumList,
+		
+		avg(if(a.createTime >=@init_startTime,rank,null)) AS a_avg_rank,
+		sum(if(a.createTime >=@init_startTime,IF(rank > 0.5, 1, 0),0)) AS a_gTaskCnt,
+		sum(if(a.createTime >=@init_startTime,IF(rank <= 0.3, 1, 0),0)) AS a_lTaskCnt,
+		sum(if(a.createTime >=@init_startTime,IF (rank > 0.3 AND rank <= 0.5, 1, 0),0)) AS a_mTaskCnt,
+		sum(if(a.createTime >=@init_startTime,1,0)) AS a_taskCnt,
+		GROUP_CONCAT(DISTINCT(if(a.createTime >=@init_startTime,v_ti.curriculumId,null))) AS a_curriculumList
+	FROM
+		yxxs_topicdiscussion AS a
+		LEFT JOIN (select topicDiscussionId,schoolId,curriculumId 
+					 from view_yxxs_topic_info force index(index_view_yxxs_topic_info) 
+					WHERE topicDiscussionId > 0 and schoolId > 0
+				  ) as v_ti ON a.topicdiscussionid = v_ti.topicdiscussionid
+		LEFT JOIN yxxs_topicdiscussionrank_ext AS rank ON a.topicdiscussionid = rank.topicdiscussionid
+	GROUP BY
+		a.userId
+) AS tt ON u.userId = tt.userId
+LEFT JOIN yxxs_address AS a ON ccc.schoolId = a.classPK
+AND classNameId = 56702
+LEFT JOIN yxxs_province AS ap ON a.province = ap.pid
+LEFT JOIN yxxs_city AS ac ON a.city = ac.cid
+LEFT JOIN yxxs_district AS ad ON a.district = ad.did
+LEFT JOIN yxxsweixin_bindweixin bw ON bw.userId = u.userId

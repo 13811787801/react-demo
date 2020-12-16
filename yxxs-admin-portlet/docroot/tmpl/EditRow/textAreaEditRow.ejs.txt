@@ -1,0 +1,11 @@
+﻿<div class="row form-group">
+    <div class="col-sm-2 control-label">
+        <span><%=label%></span>
+    </div>
+    <div class="col-sm-8">
+        <textarea id="<%=FileName%>"  class="<%=FileName%> form-control"></textarea>
+		<%if(desc){%>
+			<p><%=desc%></p>
+		<%}%>
+    </div>
+</div>

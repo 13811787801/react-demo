@@ -1,0 +1,20 @@
+
+
+
+		<%
+	    for(var i = 0;i<dataList.length ;i++){
+	    	%>
+	    	<!--animated bounceInDown-->
+		    <li class="animated bounceInDown " id="<%=dataList[i].id%>">
+				<p class="img_w"><img src="<%=dataList[i].wechatInfo.entity.headimgurl%>"/></p>
+				<p class="m_text">
+					<span class="name"><%=dataList[i].wechatInfo.entity.nickname%><a><%=new Date(dataList[i].createDate).Format("yyyy-MM-dd hh:mm:ss")%></a></span>
+					<span><%=dataList[i].content%></span>
+				</p>
+				<div class="clear"></div>
+			</li>
+	    	<%
+	    }
+	    %>
+	
+    

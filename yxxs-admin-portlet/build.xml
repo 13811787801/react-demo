@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="yxxs-admin-portlet" basedir="." default="deploy">
+    <property name="export.noService" value="" />
+    <property name="project.warSuffix" value="" />
+	
+	<import file="../build-common-portlet.xml" />
+</project>

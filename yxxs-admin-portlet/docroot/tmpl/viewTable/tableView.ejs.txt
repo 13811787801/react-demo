@@ -1,0 +1,50 @@
+﻿
+<table class="table table-bordered" style="width:100%;">
+	<%if(typeof showHeader == "undefined" || showHeader){%>
+		<tr>
+			<%for(var i=0;i<columns.length;i++){%>
+				<td class="td_h_<%=columns[i].name%>"><%=columns[i].desc?columns[i].desc:columns[i].name%></td>
+			<%}%>
+            <%if(operations != null && operations.length!=0){%>
+			<td style="width:80px;">操作</td>
+            <%}%>
+		</tr>
+	<%}%>
+	<%for(var i=0;i<list.length;i++){%>
+		<tr>
+			<%for(var j=0;j<columns.length;j++){%>
+				<%
+					var v = list[i][columns[j].name];
+					if(columns[j].format){
+						v= columns[j].format(v,list[i]);
+					}
+				%>
+				<td class="td_<%=columns[j].name%>" id="<%=columns[j].name%>"><%=v%></td>
+			<%}%>
+			<%if(operations != null && operations.length!=0){%>
+			<td>
+				<div class="dropdown" style="float:right;">
+				    <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				            操作
+				        <b class="caret"></b>
+				    </a>
+				    <ul class="dropdown-menu dropdown-menu-right">
+						<%
+						for(var j=0;j<operations.length;j++){
+							if(!operations[j].visable(list[i])){
+								continue;
+							}
+						%>
+							<li><a href="<%=operations[j].getUrl(list[i])%>"><%=operations[j].name%></a></li>
+						<%}%>
+				        <!-- 
+                        <li class="divider"></li>
+				        <li><a href="javascript:;"></a></li>
+				        -->
+				    </ul>
+			    </div>
+			</td>
+			<%}%>
+		</tr>
+	<%}%>
+</table>

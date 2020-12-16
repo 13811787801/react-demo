@@ -1,0 +1,52 @@
+table.tab_normal {
+  width: 100%; }
+
+table.tab_normal tr th {
+  background: url(../images/table-normal-th.jpg);
+  line-height: 26px;
+  font-weight: bold;
+  border-left: solid #cfcfcf 1px; }
+
+table.tab_normal tr th:first-child {
+  border: none; }
+
+table.tab_normal tr th a {
+  color: #5E5E5E;
+  text-decoration: none; }
+
+table.tab_normal tr th a:hover {
+  color: #3366CC;
+  text-decoration: underline; }
+
+table.tab_normal tr td {
+  line-height: 24px; }
+
+table.tab_normal tr th, table.tab_normal tr td {
+  font-size: 12px;
+  font-family: Times New Roman;
+  color: #7b7c7f;
+  text-indent: 10px; }
+
+table.tab_normal tr td a {
+  color: #006600;
+  text-decoration: none; }
+
+table.tab_normal tr td a:hover {
+  color: #ff9900;
+  text-decoration: none; }
+
+.odd {
+  background: #f5f8fb; }
+
+.even {
+  background: #fff; }
+
+.userTemplate_update, .orgTemplate_update {
+  float: left; }
+
+.orgTemplate_select {
+  float: right; }
+
+.select_org table tr, td {
+  padding: 3px; }
+

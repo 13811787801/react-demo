@@ -1,0 +1,23 @@
+﻿<div class="row form-group">
+    <div class="col-sm-2 control-label">
+        <span><%=label%></span>
+    </div>
+    <div id="<%=FileName+"Div"%>" class="col-sm-6">
+    	<%if(data){
+    		for(var i in data){
+    		%>
+    		<input type="checkbox" name="<%=FileName%>" value="<%=data[i].k%>" id="<%=FileName+"_"+i%>" style="width:52px;" class="<%=FileName%>"/>
+    		<span><%=data[i].v%></span>
+    		<%
+    		}
+    	}else{
+    	%>
+    	<input type="checkbox" id="<%=FileName%>" style="width:32px;" class="<%=FileName%> form-control"/>
+		<%if(desc){%>
+			<p><%=desc%></p>
+		<%}%>
+    	<%
+    	}%>
+        
+    </div>
+</div>
